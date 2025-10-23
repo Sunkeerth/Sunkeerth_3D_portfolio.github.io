@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  base: '/', // 👈 add this line
+  base: '/sunkeerth-ai-portfolio/', // 👈 add this line
   plugins: [react()],
   server: {
     port: 3000,
