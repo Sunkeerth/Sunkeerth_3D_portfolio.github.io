@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import './animations.css';
+@import './utilities.css';
+
+/* Rest of your existing index.css content remains the same */
+/* Add your CSS variables here if needed, otherwise remove the empty :root ruleset */
+
+/* Remove empty [data-theme="light"] ruleset */
+
+/* ... rest of your existing index.css ... */
+
+/* ... rest of your existing index.css ... */
