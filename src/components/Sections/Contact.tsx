@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Mail, MapPin, Phone, Send, Linkedin, Github, Code } from 'lucide-react'
+import emailjs from '@emailjs/browser'
 import './Contact.css'
 
 const Contact = () => {
@@ -15,38 +16,82 @@ const Contact = () => {
     subject: '',
     message: ''
   })
+  const [isLoading, setIsLoading] = useState(false)
+  const [isSent, setIsSent] = useState(false)
+  const [error, setError] = useState('')
+
+  // Initialize EmailJS with your public key
+  // You need to sign up at https://www.emailjs.com/ and get these credentials
+  const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID' // Replace with your service ID
+  const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID' // Replace with your template ID
+  const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY' // Replace with your public key
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     })
+    // Clear any existing errors when user starts typing
+    if (error) setError('')
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission here
-    console.log('Form submitted:', formData)
+    setIsLoading(true)
+    setError('')
+
+    try {
+      // Send email using EmailJS
+      const result = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          to_email: 'sunkeerthaiml.bitm@gmail.com'
+        },
+        EMAILJS_PUBLIC_KEY
+      )
+
+      if (result.status === 200) {
+        setIsSent(true)
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        })
+        // Reset success message after 5 seconds
+        setTimeout(() => setIsSent(false), 5000)
+      }
+    } catch (err) {
+      console.error('Failed to send email:', err)
+      setError('Failed to send message. Please try again or contact me directly at sunkeerthaiml.bitm@gmail.com')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const contactInfo = [
     {
       icon: Mail,
       title: 'Email',
-      value: 'sunkeerth@example.com',
-      href: 'mailto:sunkeerth@example.com'
+      value: 'sunkeerthaiml.bitm@gmail.com',
+      href: 'mailto:sunkeerthaiml.bitm@gmail.com'
     },
     {
       icon: MapPin,
       title: 'Location',
-      value: 'Your City, Country',
+      value: 'Ballari, Karnataka, India',
       href: '#'
     },
     {
       icon: Phone,
       title: 'Phone',
-      value: '+1 234 567 8900',
-      href: 'tel:+12345678900'
+      value: '+91-9113838854',
+      href: 'tel:+919113838854'
     }
   ]
 
@@ -147,6 +192,26 @@ const Contact = () => {
           </motion.div>
 
           <motion.div className="contact-form" variants={itemVariants}>
+            {isSent && (
+              <motion.div 
+                className="success-message"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                ✅ Message sent successfully! I'll get back to you soon.
+              </motion.div>
+            )}
+            
+            {error && (
+              <motion.div 
+                className="error-message"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                ❌ {error}
+              </motion.div>
+            )}
+
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <input
@@ -156,6 +221,7 @@ const Contact = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
+                  disabled={isLoading}
                 />
               </div>
               
@@ -167,6 +233,7 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
+                  disabled={isLoading}
                 />
               </div>
               
@@ -178,6 +245,7 @@ const Contact = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   required
+                  disabled={isLoading}
                 />
               </div>
               
@@ -189,6 +257,7 @@ const Contact = () => {
                   value={formData.message}
                   onChange={handleChange}
                   required
+                  disabled={isLoading}
                 ></textarea>
               </div>
               
@@ -197,11 +266,29 @@ const Contact = () => {
                 className="btn btn-primary"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                disabled={isLoading}
               >
-                Send Message
-                <Send />
+                {isLoading ? (
+                  <>
+                    <div className="loading-spinner"></div>
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <Send />
+                  </>
+                )}
               </motion.button>
             </form>
+
+            {/* Alternative contact method */}
+            <div className="direct-contact">
+              <p>Prefer to email directly?</p>
+              <a href="mailto:sunkeerthaiml.bitm@gmail.com" className="direct-email-link">
+                sunkeerthaiml.bitm@gmail.com
+              </a>
+            </div>
           </motion.div>
         </motion.div>
       </div>

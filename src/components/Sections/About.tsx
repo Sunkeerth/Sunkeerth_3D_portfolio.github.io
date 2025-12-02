@@ -13,9 +13,9 @@ const About = () => {
     { icon: Brain, name: 'AI/ML', color: '#6366f1' },
     { icon: Box, name: 'VR/XR', color: '#06d6a0' },
     { icon: Cpu, name: 'Embedded Systems', color: '#ff6b6b' },
-    { icon: Rocket, name: 'Robotics', color: '#8b5cf6' },
-    { icon: Code2, name: 'Python', color: '#3b82f6' },
-    { icon: Database, name: 'Data Science', color: '#f59e0b' }
+    { icon: Rocket, name: '3D Development', color: '#8b5cf6' },
+    { icon: Code2, name: 'Full Stack Development', color: '#3b82f6' },
+    { icon: Database, name: 'Database', color: '#f59e0b' }
   ]
 
   const containerVariants = {
@@ -70,15 +70,15 @@ const About = () => {
             
             <div className="stats">
               <div className="stat">
-                <div className="stat-number">50+</div>
+                <div className="stat-number">10+</div>
                 <div className="stat-label">Projects Completed</div>
               </div>
               <div className="stat">
-                <div className="stat-number">3+</div>
+                <div className="stat-number">1+</div>
                 <div className="stat-label">Years Experience</div>
               </div>
               <div className="stat">
-                <div className="stat-number">20+</div>
+                <div className="stat-number">10+</div>
                 <div className="stat-label">Technologies</div>
               </div>
             </div>

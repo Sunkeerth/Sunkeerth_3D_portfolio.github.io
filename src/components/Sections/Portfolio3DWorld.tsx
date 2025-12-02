@@ -1,5 +1,5 @@
 // Portfolio3DWorld.tsx
-import { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Text, Billboard, Environment, Sparkles, Float } from '@react-three/drei'
 import * as THREE from 'three'
@@ -208,48 +208,71 @@ const FloatingParticles = ({ count = 50 }) => {
   )
 }
 
-const Scene = ({ onItemClick }: any) => {
-  const { camera } = useThree()
+const Scene = ({ onItemClick, onInteraction }: any) => {
+  const { camera, gl } = useThree()
   
-  // Updated with your actual projects
+  // Updated projects data from your projects component
   const projects = [
     {
       id: 1,
-      title: "Smart Dual-Drone System",
-      description: "Autonomous dual-drone system for precision agriculture that scans crops, identifies stressed plants, and autonomously sprays pesticides. Designed for National Innovation Challenge for Drone Application and Research (NIDAR).",
-      tags: ["Python", "ROS 2", "PX4", "Jetson Nano", "Computer Vision"],
-      github: "#",
-      demo: "#",
-      position: [-5, 2, -8] as [number, number, number]
+      title: "AI-Powered Telemedicine Kiosk",
+      description: "Healthcare platform reducing rural patient wait times by 50% with AI-driven scheduling and QR-based registration.",
+      tags: ["Node.js", "Express.js", "JavaScript", "AI Scheduling", "Healthcare", "Voice UI"],
+      github: "https://github.com/Sunkeerth/MINI_PROJECT_KISOK",
+      demo: "https://sunkeerth.github.io/MINI_PROJECT_KISOK/",
+      position: [-5, 2, -8] as [number, number, number],
+      category: "ai-ml"
     },
     {
       id: 2,
-      title: "Reality Pod 3D Scanner",
-      description: "AI-powered portable 3D scanner that captures, reconstructs, and exports digital 3D models automatically using Intel RealSense and NVIDIA Jetson.",
-      tags: ["Python", "PyTorch", "Open3D", "Unity", "3D Reconstruction"],
-      github: "#",
+      title: "RGAC Virtual University",
+      description: "VR-based learning platform with 90% efficiency improvement featuring virtual laboratories and 3D simulations.",
+      tags: ["Unity", "VR/AR/XR", "3D Modeling", "Education Tech", "Immersive Learning"],
+      github: "https://github.com/Sunkeerth/RAGC-Virtual-university-",
       demo: "#",
-      position: [-5, 2, 0] as [number, number, number]
+      position: [-5, 2, 0] as [number, number, number],
+      category: "vr-ar"
     },
     {
       id: 3,
-      title: "Blind Spot Detection",
-      description: "Real-time embedded AI system for Indian trucks that detects vehicles in blind spots and warns drivers with visual and audible alerts.",
-      tags: ["Python", "TensorFlow Lite", "Raspberry Pi", "ESP32-CAM"],
+      title: "Phone-to-PC Virtual Mouse Controller",
+      description: "Mobile phone as wireless mouse for laptop/PC using socket connection over WiFi.",
+      tags: ["Python", "Socket Programming", "Android", "Java", "WiFi", "Real-time Communication"],
+      github: "https://github.com/Sunkeerth/Virtual-Mouse",
+      demo: "#",
+      position: [-5, 2, 8] as [number, number, number],
+      category: "mobile"
+    },
+    {
+      id: 4,
+      title: "Embedded AI-Based Blind Spot Detection",
+      description: "Real-time embedded AI system for truck safety using computer vision and ultrasonic sensors.",
+      tags: ["Python", "TensorFlow Lite", "Raspberry Pi", "ESP32-CAM", "Ultrasonic", "Embedded AI"],
       github: "#",
       demo: "#",
-      position: [-5, 2, 8] as [number, number, number]
+      position: [0, 2, -4] as [number, number, number],
+      category: "embedded"
+    },
+    {
+      id: 5,
+      title: "Smart Dual-Drone Agricultural System",
+      description: "Autonomous drone system for precision agriculture with crop scanning and targeted pesticide spraying.",
+      tags: ["Python", "ROS 2", "PX4", "Jetson Nano", "Computer Vision", "MAVLink"],
+      github: "#",
+      demo: "#",
+      position: [0, 2, 4] as [number, number, number],
+      category: "embedded"
     }
   ]
 
-  // Updated with your actual skills
+  // Updated skills data
   const skills = [
     { 
       id: 1,
       name: "AI/ML Development", 
       level: 90, 
       description: "Expert in machine learning, deep learning, computer vision, and neural networks with TensorFlow and PyTorch.",
-      projects: ["Smart Dual-Drone", "Blind Spot Detection", "Telemedicine Kiosk"],
+      projects: ["Telemedicine Kiosk", "Blind Spot Detection", "Smart Dual-Drone"],
       position: [5, 2, -8] as [number, number, number]
     },
     { 
@@ -257,16 +280,32 @@ const Scene = ({ onItemClick }: any) => {
       name: "VR/AR Development", 
       level: 85, 
       description: "Proficient in Unity3D, 3D modeling, and creating immersive virtual and augmented reality experiences.",
-      projects: ["Reality Pod", "Virtual Reality University", "3D Applications"],
+      projects: ["RGAC Virtual University", "3D Applications", "Immersive Learning"],
       position: [5, 2, 0] as [number, number, number]
     },
     { 
       id: 3,
-      name: "Embedded Systems", 
+      name: "Mobile Development", 
       level: 80, 
-      description: "Experienced in integrating AI models with embedded systems, robotics, and IoT devices.",
-      projects: ["Smart Dual-Drone", "Blind Spot Detection", "IoT Projects"],
+      description: "Experienced in Android development, cross-platform apps, and mobile-first solutions.",
+      projects: ["Virtual Mouse Controller", "Mobile Applications", "IoT Integration"],
       position: [5, 2, 8] as [number, number, number]
+    },
+    { 
+      id: 4,
+      name: "Embedded Systems", 
+      level: 85, 
+      description: "Skilled in integrating AI models with embedded systems, robotics, and IoT devices.",
+      projects: ["Smart Dual-Drone", "Blind Spot Detection", "IoT Projects"],
+      position: [8, 2, -4] as [number, number, number]
+    },
+    { 
+      id: 5,
+      name: "Full Stack Development", 
+      level: 75, 
+      description: "Proficient in building end-to-end web applications with modern frameworks and technologies.",
+      projects: ["Telemedicine Kiosk", "Web Applications", "API Development"],
+      position: [8, 2, 4] as [number, number, number]
     }
   ]
 
@@ -277,7 +316,24 @@ const Scene = ({ onItemClick }: any) => {
 
   const handleItemClick = (item: any, type: string) => {
     onItemClick({ ...item, type })
+    onInteraction()
   }
+
+  // Handle canvas interactions for audio
+  useEffect(() => {
+    const handleInteraction = () => {
+      onInteraction()
+    }
+
+    const canvas = gl.domElement
+    canvas.addEventListener('mousedown', handleInteraction)
+    canvas.addEventListener('touchstart', handleInteraction)
+
+    return () => {
+      canvas.removeEventListener('mousedown', handleInteraction)
+      canvas.removeEventListener('touchstart', handleInteraction)
+    }
+  }, [gl, onInteraction])
 
   return (
     <>
@@ -297,8 +353,8 @@ const Scene = ({ onItemClick }: any) => {
       <Sparkles count={50} scale={[30, 10, 30]} size={2} speed={0.3} />
       
       <Ground />
-      <Road length={30} />
-      <RoadMarkings length={30} />
+      <Road length={40} />
+      <RoadMarkings length={40} />
       
       {/* Project Panels */}
       {projects.map((project) => (
@@ -331,13 +387,13 @@ const Scene = ({ onItemClick }: any) => {
       ))}
       
       {/* Decorative Trees */}
-      <Tree position={[-12, 0, -12]} size={1.2} />
-      <Tree position={[12, 0, -12]} size={1} />
-      <Tree position={[-12, 0, 12]} size={0.8} />
-      <Tree position={[12, 0, 12]} size={1.1} />
+      <Tree position={[-15, 0, -15]} size={1.2} />
+      <Tree position={[15, 0, -15]} size={1} />
+      <Tree position={[-15, 0, 15]} size={0.8} />
+      <Tree position={[15, 0, 15]} size={1.1} />
       
       {/* Welcome Sign */}
-      <Billboard position={[0, 3, -14]}>
+      <Billboard position={[0, 3, -18]}>
         <Text
           fontSize={0.8}
           color="#6366f1"
@@ -345,7 +401,18 @@ const Scene = ({ onItemClick }: any) => {
           anchorY="middle"
           font="/fonts/inter-bold.woff"
         >
-          Welcome to My Portfolio
+          Welcome to My 3D Portfolio
+        </Text>
+      </Billboard>
+
+      <Billboard position={[0, 2, -18]}>
+        <Text
+          fontSize={0.3}
+          color="#94a3b8"
+          anchorX="center"
+          anchorY="middle"
+        >
+          Explore my projects and skills
         </Text>
       </Billboard>
       
@@ -354,9 +421,10 @@ const Scene = ({ onItemClick }: any) => {
         enablePan={true}
         maxPolarAngle={Math.PI / 2}
         minDistance={6}
-        maxDistance={20}
+        maxDistance={25}
         enableDamping
         dampingFactor={0.05}
+        onChange={onInteraction} // Trigger audio when controls are used
       />
     </>
   )
@@ -388,15 +456,20 @@ const ItemModal = ({ item, isOpen, onClose }: any) => {
             </div>
             
             <div className="project-links">
-              {item.github && (
+              {item.github && item.github !== '#' && (
                 <a href={item.github} target="_blank" rel="noopener noreferrer" className="project-link">
                   <span>📁</span> GitHub
                 </a>
               )}
-              {item.demo && (
+              {item.demo && item.demo !== '#' && (
                 <a href={item.demo} target="_blank" rel="noopener noreferrer" className="project-link">
                   <span>🌐</span> Live Demo
                 </a>
+              )}
+              {(item.github === '#' || item.demo === '#') && (
+                <div className="coming-soon">
+                  🔄 More details coming soon...
+                </div>
               )}
             </div>
           </>
@@ -435,15 +508,55 @@ const Portfolio3DWorld = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [selectedItem, setSelectedItem] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isMuted, setIsMuted] = useState(false)
+  const [volume, setVolume] = useState(0.5)
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false)
+  const audioRef = useRef<HTMLAudioElement>(null)
+
+  // Background music for the 3D world - using a placeholder URL
+  // You can replace this with your own audio file
+  const backgroundMusic = "https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3";
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 2000)
+    const timer = setTimeout(() => setIsLoading(false), 3000)
     return () => clearTimeout(timer)
   }, [])
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume
+      audioRef.current.muted = isMuted
+    }
+  }, [volume, isMuted])
+
+  const toggleMute = () => {
+    setIsMuted(!isMuted)
+  }
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(e.target.value)
+    setVolume(newVolume)
+    if (newVolume > 0 && isMuted) {
+      setIsMuted(false)
+    }
+  }
+
+  const handleWorldInteraction = () => {
+    if (audioRef.current && !isAudioPlaying) {
+      audioRef.current.play()
+        .then(() => {
+          setIsAudioPlaying(true)
+        })
+        .catch(error => {
+          console.log('Audio play failed:', error)
+        })
+    }
+  }
 
   const handleItemClick = (item: any) => {
     setSelectedItem(item)
     setIsModalOpen(true)
+    handleWorldInteraction()
   }
 
   const handleCloseModal = () => {
@@ -453,6 +566,43 @@ const Portfolio3DWorld = () => {
 
   return (
     <div className="portfolio-3d-world">
+      {/* Audio element */}
+      <audio 
+        ref={audioRef} 
+        loop
+        preload="auto"
+      >
+        <source src={backgroundMusic} type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+
+      {/* Audio controls */}
+      <div className="audio-controls">
+        <div className="volume-slider">
+          <input 
+            type="range" 
+            min="0" 
+            max="1" 
+            step="0.1" 
+            value={volume}
+            onChange={handleVolumeChange}
+          />
+        </div>
+        <button 
+          className={`audio-btn ${isMuted ? 'muted' : ''}`}
+          onClick={toggleMute}
+        >
+          {isMuted ? '🔇' : '🔊'}
+        </button>
+      </div>
+
+      {/* Audio visualization */}
+      <div className={`audio-visualization ${isAudioPlaying && !isMuted ? 'active' : ''}`}>
+        {[...Array(12)].map((_, i) => (
+          <div key={i} className="audio-bar" />
+        ))}
+      </div>
+
       {isLoading && (
         <div className="loading-overlay">
           <div className="loading-spinner"></div>
@@ -468,12 +618,17 @@ const Portfolio3DWorld = () => {
         camera={{ position: [0, 4, 12], fov: 50 }}
         className="three-canvas"
         gl={{ antialias: true }}
+        onMouseDown={handleWorldInteraction}
+        onTouchStart={handleWorldInteraction}
       >
-        <Scene onItemClick={handleItemClick} />
+        <Scene onItemClick={handleItemClick} onInteraction={handleWorldInteraction} />
       </Canvas>
       
       <div className="world-instructions">
         <p>🎮 Drag to look around • Scroll to zoom • Click on floating panels for details</p>
+        {!isAudioPlaying && (
+          <p className="audio-hint">🔊 Move around to activate ambient music</p>
+        )}
       </div>
 
       <ItemModal 
