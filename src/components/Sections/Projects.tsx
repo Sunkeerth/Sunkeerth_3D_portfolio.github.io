@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { 
   ExternalLink, Github, Brain, Cpu, Code, Smartphone, 
-  Camera, Car, FileText, Play, Image, X, Download,
+  Car, FileText, Play, Image, X, Download,
   Calendar, Clock, Users, Maximize2, Minimize2, Wifi
 } from 'lucide-react'
 import './Projects.css'
@@ -19,8 +19,8 @@ import vru2 from '../../assets/projects/vru/image2.png'
 import blindspot2 from '../../assets/projects/blindspot/image2.png'
 import blindspot3 from '../../assets/projects/blindspot/image3.jpg'
 
-import drone1 from '../../assets/projects/drone/image1.png'
-import drone2 from '../../assets/projects/drone/image2.jpg'
+// import drone1 from '../../assets/projects/drone/image1.png'
+// import drone2 from '../../assets/projects/drone/image2.jpg'
 
 // Import project videos
 import telemedicineDemo from '../../assets/projects/telemedicine/demo.mp4'
@@ -32,7 +32,7 @@ import virtualMouseVideo from '../../assets/projects/virtual-mouse/demo.mp4'
 import telemedicineTechDocs from '../../assets/projects/telemedicine/report.pdf'
 import vruArchitecture from '../../assets/projects/vru/report.pdf'
 import blindspotPaper from '../../assets/projects/blindspot/report.pdf'
-import droneProposal from '../../assets/projects/drone/Drone_communication.pdf'
+// import droneProposal from '../../assets/projects/drone/Drone_communication.pdf'
 
 const Projects = () => {
   const [ref, inView] = useInView({
@@ -97,14 +97,14 @@ const Projects = () => {
       videos: [vruDemo, vruDemo2],
       documents: [
         { 
-          name: 'RGAC_Virtual_University_document.pdf', 
+          name: 'report1.pdf', 
           url: vruArchitecture, 
           size: '1.5 MB',
           type: 'pdf'
         }
       ],
       links: {
-        demo: '#',
+        demo: 'Video1',
         code: 'https://github.com/Sunkeerth/RAGC-Virtual-university-'
       },
       features: [
@@ -137,14 +137,14 @@ const Projects = () => {
       videos: [virtualMouseVideo],
       documents: [
         { 
-          name: 'Virtual_Mouse_Documentation.pdf', 
+          name: 'doc.pdf', 
           url: '#',
           size: '1.2 MB',
           type: 'pdf'
         }
       ],
       links: {
-        demo: '#',
+        demo: 'demo.mp4',
         code: 'https://github.com/Sunkeerth/Virtual-Mouse'
       },
       features: [
@@ -174,15 +174,15 @@ const Projects = () => {
       videos: [],
       documents: [
         { 
-          name: 'Research Paper.pdf', 
+          name: 'report.pdf', 
           url: blindspotPaper, 
           size: '3.2 MB',
           type: 'pdf'
         },
       ],
       links: {
-        demo: '#',
-        code: '#'
+        demo: 'demo.mp4',
+        // code: '#'
       },
       features: [
         'Real-time vehicle detection',
@@ -199,42 +199,7 @@ const Projects = () => {
       icon: Car,
       status: 'Ongoing'
     },
-    {
-      id: 5,
-      title: 'Smart Dual-Drone Agricultural System',
-      shortDescription: 'Autonomous drone system for precision agriculture',
-      fullDescription: 'A dual-drone autonomous system designed for precision agriculture, featuring crop scanning and targeted pesticide spraying. Developed for National Innovation Challenge for Drone Application and Research.',
-      category: 'embedded',
-      tags: ['Python', 'ROS 2', 'PX4', 'Jetson Nano', 'Computer Vision', 'MAVLink', 'Unity'],
-      images: [drone1, drone2],
-      videos: [],
-      documents: [
-        { 
-          name: 'NIDAR Proposal.pdf', 
-          url: droneProposal, 
-          size: '4.2 MB',
-          type: 'pdf'
-        },
-      ],
-      links: {
-        demo: '#',
-        code: '#'
-      },
-      features: [
-        'Autonomous dual-drone coordination',
-        'Real-time crop health monitoring',
-        'Precision pesticide spraying',
-        'ROS 2 based communication',
-        'Computer vision analysis'
-      ],
-      stats: {
-        timeline: '12 Months',
-        teamSize: '5 People',
-        completion: 'Prototype'
-      },
-      icon: Camera,
-      status: 'prototype'
-    }
+   
   ]
 
   const filters = [

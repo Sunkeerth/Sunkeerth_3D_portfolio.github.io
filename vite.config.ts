@@ -2,12 +2,12 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  base: '/Sunkeerth_3D_portfolio.github.io/', // 👈 add this line
+  base: '/', // ✔ correct for username.github.io repo
   plugins: [react()],
   server: {
     port: 3000,
   },
-  build: {    
+  build: {
     target: 'esnext',
     minify: 'esbuild',
     sourcemap: false,
